@@ -2,42 +2,43 @@ package photokatsu
 
 import photokatsu.util.Enum
 
-object Idol {
-  import Idols.Idol
+sealed trait Idol {
+  def name: String
+  def toLong(): Long
+}
 
-  val fromLong: PartialFunction[Long, Idol] =
+object Idol {
+  val fromLong: Map[Long, Idol] =
     Idols.values.map(idol => idol.toLong -> idol).toMap
 }
 
 object Idols extends Enum {
-  type Idol = Idols.EnumVal
-
-  sealed abstract class EnumVal(val name: String) extends Value {
+  sealed abstract class EnumVal(val name: String) extends Value with Idol {
     def toLong(): Long = 1L << this.ordinal
   }
 
-  case object Akari extends Idol("Akari")
-  case object Aoi extends Idol("Aoi")
-  case object Hikari extends Idol("Hikari")
-  case object Hinaki extends Idol("Hinaki")
-  case object Ichigo extends Idol("Ichigo")
-  case object Juri extends Idol("Juri")
-  case object Kaede extends Idol("Kaede")
-  case object Kii extends Idol("Kii")
-  case object Kokone extends Idol("Kokone")
-  case object Madoka extends Idol("Madoka")
-  case object Maria extends Idol("Maria")
-  case object Mikuru extends Idol("Mikuru")
-  case object Miyabi extends Idol("Miyabi")
-  case object Mizuki extends Idol("Mizuki")
-  case object Otome extends Idol("Otome")
-  case object Ran extends Idol("Ran")
-  case object Rin extends Idol("Rin")
-  case object Sakura extends Idol("Sakura")
-  case object Seira extends Idol("Seira")
-  case object Shion extends Idol("Shion")
-  case object Sora extends Idol("Sora")
-  case object Sumire extends Idol("Sumire")
-  case object Yurika extends Idol("Yurika")
+  case object Akari extends EnumVal("Akari")
+  case object Aoi extends EnumVal("Aoi")
+  case object Hikari extends EnumVal("Hikari")
+  case object Hinaki extends EnumVal("Hinaki")
+  case object Ichigo extends EnumVal("Ichigo")
+  case object Juri extends EnumVal("Juri")
+  case object Kaede extends EnumVal("Kaede")
+  case object Kii extends EnumVal("Kii")
+  case object Kokone extends EnumVal("Kokone")
+  case object Madoka extends EnumVal("Madoka")
+  case object Maria extends EnumVal("Maria")
+  case object Mikuru extends EnumVal("Mikuru")
+  case object Miyabi extends EnumVal("Miyabi")
+  case object Mizuki extends EnumVal("Mizuki")
+  case object Otome extends EnumVal("Otome")
+  case object Ran extends EnumVal("Ran")
+  case object Rin extends EnumVal("Rin")
+  case object Sakura extends EnumVal("Sakura")
+  case object Seira extends EnumVal("Seira")
+  case object Shion extends EnumVal("Shion")
+  case object Sora extends EnumVal("Sora")
+  case object Sumire extends EnumVal("Sumire")
+  case object Yurika extends EnumVal("Yurika")
 }
 
