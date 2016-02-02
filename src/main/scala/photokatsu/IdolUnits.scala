@@ -22,8 +22,8 @@ object IdolUnits {
   def fromSubunits(subunits: Seq[Subunit], minSmile: Int = 1): Array[IdolUnit] = {
     val subunitLongs: Array[Long] = subunits.map(_.toLong).toArray
 
-    val idolUnitLs: Iterable[IdolUnitLongs] = for {
-      smileCount: Int <- subunits.size.to(minSmile).by(-1).toArray
+    val idolUnitLs = for {
+      smileCount: Int <- subunits.size.to(minSmile).by(-1)
       possibleSubunitsL <- subunitLongs.combinations(smileCount)
       membersL: Long = possibleSubunitsL.reduce(_ | _)
       if java.lang.Long.bitCount(membersL) <= MAX_SIZE

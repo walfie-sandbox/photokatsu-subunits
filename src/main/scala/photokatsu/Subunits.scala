@@ -25,7 +25,7 @@ object Subunits {
     Subunit("Luminas", Akari, Sumire, Hinaki),
     Subunit("Vanilla Chili Pepper", Juri, Madoka, Rin),
     Subunit("Vampire Academy", Yurika, Mizuki, Sumire),
-    Subunit("Tsunagaru Line", Ichigo, Akari, Mizuki),
+    Subunit("Tsunagaru Baton", Ichigo, Akari, Mizuki),
     Subunit("2wingS", Ichigo, Seira),
     Subunit("WM", Mizuki, Mikuru),
     Subunit("DansingDiva", Sumire, Rin),
@@ -39,7 +39,6 @@ object Subunits {
     Subunit("ChocoPop Tantei", Seira, Kii),
     Subunit("Tsuki no Sabaku no Gensokyoku", Ran, Sora),
     Subunit("Aikatsu! Sensei", Akari, Juri),
-    Subunit("Tsunagaru Baton", Ichigo, Akari),
     Subunit("Otome to Hinaki no Mattari Saka", Otome, Hinaki),
     Subunit("Gogo wa Ichi Ichi Ichigo Kibun", Ichigo),
     Subunit("Chika no Taiyo", Hikari)

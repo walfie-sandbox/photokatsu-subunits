@@ -1,9 +1,11 @@
 package photokatsu
 
 import photokatsu.util.Enum
+import photokatsu.IdolTypes._
 
 sealed trait Idol {
   def name: String
+  def attribute: IdolType
   def toLong(): Long
 }
 
@@ -13,32 +15,35 @@ object Idol {
 }
 
 object Idols extends Enum {
-  sealed abstract class EnumVal(val name: String) extends Value with Idol {
+  sealed abstract class EnumVal(
+    val name: String,
+    val attribute: IdolType
+  ) extends Value with Idol {
     def toLong(): Long = 1L << this.ordinal
   }
 
-  case object Akari extends EnumVal("Akari")
-  case object Aoi extends EnumVal("Aoi")
-  case object Hikari extends EnumVal("Hikari")
-  case object Hinaki extends EnumVal("Hinaki")
-  case object Ichigo extends EnumVal("Ichigo")
-  case object Juri extends EnumVal("Juri")
-  case object Kaede extends EnumVal("Kaede")
-  case object Kii extends EnumVal("Kii")
-  case object Kokone extends EnumVal("Kokone")
-  case object Madoka extends EnumVal("Madoka")
-  case object Maria extends EnumVal("Maria")
-  case object Mikuru extends EnumVal("Mikuru")
-  case object Miyabi extends EnumVal("Miyabi")
-  case object Mizuki extends EnumVal("Mizuki")
-  case object Otome extends EnumVal("Otome")
-  case object Ran extends EnumVal("Ran")
-  case object Rin extends EnumVal("Rin")
-  case object Sakura extends EnumVal("Sakura")
-  case object Seira extends EnumVal("Seira")
-  case object Shion extends EnumVal("Shion")
-  case object Sora extends EnumVal("Sora")
-  case object Sumire extends EnumVal("Sumire")
-  case object Yurika extends EnumVal("Yurika")
+  case object Akari extends EnumVal("Akari", Cute)
+  case object Aoi extends EnumVal("Aoi", Cool)
+  case object Hikari extends EnumVal("Hikari", Sexy)
+  case object Hinaki extends EnumVal("Hinaki", Pop)
+  case object Ichigo extends EnumVal("Ichigo", Cute)
+  case object Juri extends EnumVal("Juri", Sexy)
+  case object Kaede extends EnumVal("Kaede", Pop)
+  case object Kii extends EnumVal("Kii", Pop)
+  case object Kokone extends EnumVal("Kokone", Pop)
+  case object Madoka extends EnumVal("Madoka", Cute)
+  case object Maria extends EnumVal("Maria", Cute)
+  case object Mikuru extends EnumVal("Mikuru", Pop)
+  case object Miyabi extends EnumVal("Miyabi", Sexy)
+  case object Mizuki extends EnumVal("Mizuki", Sexy)
+  case object Otome extends EnumVal("Otome", Pop)
+  case object Ran extends EnumVal("Ran", Sexy)
+  case object Rin extends EnumVal("Rin", Cool)
+  case object Sakura extends EnumVal("Sakura", Cute)
+  case object Seira extends EnumVal("Seira", Cool)
+  case object Shion extends EnumVal("Shion", Cool)
+  case object Sora extends EnumVal("Sora", Sexy)
+  case object Sumire extends EnumVal("Sumire", Cool)
+  case object Yurika extends EnumVal("Yurika", Cool)
 }
 
