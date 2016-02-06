@@ -19,9 +19,9 @@ object Photokatsu extends JSApp {
     // TODO: filter by required/important idols
 
     for (unit <- units) {
-      println(s"${unit.subunits.size}")
+      println(s"${unit.smiles.size}")
       println(unit.members.mkString(", "))
-      println(unit.subunits.map(_.name).mkString("(", ", ", ")"))
+      println(unit.smiles.map(_.name).mkString("(", ", ", ")"))
       println("=========")
     }
   }

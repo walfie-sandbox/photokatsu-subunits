@@ -1,11 +1,11 @@
 package photokatsu
 
 import photokatsu.util.Enum
-import photokatsu.IdolTypes._
+import photokatsu.Attributes._
 
 sealed trait Idol {
   def name: String
-  def attribute: IdolType
+  def attribute: Attribute
   def toLong(): Long
 }
 
@@ -17,7 +17,7 @@ object Idol {
 object Idols extends Enum {
   sealed abstract class EnumVal(
     val name: String,
-    val attribute: IdolType
+    val attribute: Attribute
   ) extends Value with Idol {
     def toLong(): Long = 1L << this.ordinal
   }
