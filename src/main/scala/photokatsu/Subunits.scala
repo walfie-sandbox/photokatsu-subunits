@@ -57,12 +57,24 @@ object Subunits {
     checks.flatMap(_.apply(idols))
   }
 
-  def starlightQueen(idols: Set[Idol]): Option[Subunit] = {
+  def getPossibleSubunits(
+    idols: Seq[Idol],
+    subunits: Seq[Subunit] = Subunits.all
+  ): Seq[Subunit] = {
+    val idolL: Long = idols.map(_.toLong).reduce(_ | _)
+
+    for {
+      subunitL: Long <- subunits.map(_.toLong)
+      if (subunitL & idolL) == subunitL
+    } yield Subunit.fromLong(subunitL)
+  }
+
+  private def starlightQueen(idols: Set[Idol]): Option[Subunit] = {
     val queens = idols.intersect(Set(Mizuki, Otome, Sakura))
     queens.nonEmpty.option(Subunit("Starlight Queen", queens))
   }
 
-  def sameAttribute(idols: Set[Idol]): Option[Subunit] = {
+  private def sameAttribute(idols: Set[Idol]): Option[Subunit] = {
     if (idols.size == IdolUnits.MAX_SIZE) {
       val attr = idols.head.attribute
       idols.forall(idol => idol.attribute == attr).option {
@@ -71,7 +83,7 @@ object Subunits {
     } else None
   }
 
-  def allStarlight(idols: Set[Idol]): Option[Subunit] = {
+  private def allStarlight(idols: Set[Idol]): Option[Subunit] = {
     val nonStarlight: Set[Idol] = Set(
       Mizuki, Seira, Kii, Sora, Maria, Mikuru
     )
@@ -81,7 +93,7 @@ object Subunits {
     }
   }
 
-  def allTypes(idols: Set[Idol]): Option[Subunit] = {
+  private def allTypes(idols: Set[Idol]): Option[Subunit] = {
     (idols.map(_.attribute).size == 4).option {
       Subunit("All Types", idols)
     }

@@ -7,7 +7,7 @@ case class IdolUnit(members: Set[Idol], subunits: Seq[Subunit])
 object IdolUnits {
   val MAX_SIZE = 8
 
-  case class IdolUnitLongs(membersL: Long, subunitsL: Array[Long]) {
+  private case class IdolUnitLongs(membersL: Long, subunitsL: Array[Long]) {
     def toIdolUnit(): IdolUnit = {
       val members: Set[Idol] = Idol.fromLong.withFilter {
         case (idolL: Long, idol: Idol) => (membersL & idolL) != 0
@@ -30,6 +30,19 @@ object IdolUnits {
     } yield IdolUnitLongs(membersL, possibleSubunitsL)
 
     idolUnitLs.map(_.toIdolUnit)
+  }
+
+  def fromIdols(idols: Seq[Idol], minSmile: Int): Seq[IdolUnit] = {
+    val subunits = Subunits.getPossibleSubunits(idols, Subunits.all)
+
+    val units: Seq[IdolUnit] = for {
+      unit <- IdolUnits.fromSubunits(subunits, minSmile)
+    } yield {
+      val extraSubunits: Seq[Subunit] = Subunits.genericUnits(unit.members)
+      unit.copy(subunits = unit.subunits ++ extraSubunits)
+    }
+
+    units.sortBy(-_.subunits.size)
   }
 }
 

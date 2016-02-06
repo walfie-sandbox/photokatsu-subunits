@@ -6,5 +6,9 @@ scalaVersion := "2.11.7"
 
 scalacOptions ++= Seq("-feature","-deprecation", "-unchecked", "-Xlint")
 
-mainClass in (Compile, run) := Some("photokatsu.Photokatsu")
+enablePlugins(ScalaJSPlugin)
+
+Dependencies.settings
+
+ScalaJS.settings
 
