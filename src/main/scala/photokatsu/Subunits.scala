@@ -36,7 +36,7 @@ object Subunits {
     Subunit("Amafuwa☆Nadeshiko", Miyabi, Kokone),
     Subunit("Producers", Aoi, Kii),
     Subunit("Ikenai Keiji", Aoi, Shion),
-    Subunit("Oshare Kaito Swallowtailshin", Ichigo, Otome),
+    Subunit("Oshare Kaito Swallowtail (Shin)", Ichigo, Otome),
     Subunit("Fushigi no Kuni no Alice", Ichigo, Shion),
     Subunit("ChocoPop Tantei", Seira, Kii),
     Subunit("Tsuki no Sabaku no Gensokyoku", Ran, Sora),
