@@ -1,7 +1,7 @@
-package photokatsu
+package photokatsu.models
 
 import photokatsu.util.Enum
-import photokatsu.Attributes._
+import photokatsu.models.Attributes._
 
 sealed trait Idol {
   def name: String

@@ -1,4 +1,4 @@
-package photokatsu
+package photokatsu.models
 
 sealed trait Attribute
 

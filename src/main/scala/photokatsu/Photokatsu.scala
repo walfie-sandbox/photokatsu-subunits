@@ -3,7 +3,8 @@ package photokatsu
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.document
-import photokatsu.Idols._
+import photokatsu.models._
+import photokatsu.models.Idols._
 import scala.scalajs.js.JSApp
 
 object Photokatsu extends JSApp {

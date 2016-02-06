@@ -1,6 +1,6 @@
-package photokatsu
+package photokatsu.models
 
-import photokatsu.Idols._
+import photokatsu.models.Idols._
 import photokatsu.util.BooleanOps._
 
 case class Smile(name: String, members: Set[Idol]) {
