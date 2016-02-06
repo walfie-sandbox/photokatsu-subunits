@@ -5,10 +5,10 @@ import photokatsu.Idols._
 object Photokatsu {
   def main(args: Array[String]): Unit = {
     val myIdols: Set[Idol] = Set(
-      Akari, Ichigo, Maria, Yurika, Sumire, Rin,
-      Seira, Shion, Sora, Ran, Kii,
-      Mikuru, Mizuki, Kokone, Otome, Sora,
-      Aoi, Juri, Hikari
+      Akari, Ichigo, Maria, Yurika, Sumire,
+      Rin, Seira, Shion, Sora, Ran,
+      Kii, Mikuru, Mizuki, Kokone, Otome,
+      Sora, Aoi, Juri, Hikari
     )
 
     /*
@@ -33,7 +33,12 @@ object Photokatsu {
 
     val subunits = getPossibleSubunits(myIdols.toSeq, Subunits.all)
 
-    val units: Array[IdolUnit] = IdolUnits.fromSubunits(subunits, 6)
+    val units: Seq[IdolUnit] = IdolUnits.fromSubunits(subunits, 6)
+      .map { (unit: IdolUnit) =>
+        val extraSubunits: Seq[Subunit] = Subunits.genericUnits(unit.members)
+
+        unit.copy(subunits = unit.subunits ++ extraSubunits)
+      }
       .filter(unit => requiredIdols.subsetOf(unit.members))
       .sortBy(unit => -unit.subunits.size)
       .sortBy(unit => -prioritizedIdols.intersect(unit.members).size)

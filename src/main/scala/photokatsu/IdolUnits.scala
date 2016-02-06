@@ -2,7 +2,7 @@ package photokatsu
 
 import photokatsu.Idols._
 
-case class IdolUnit(members: Set[Idol], subunits: Array[Subunit])
+case class IdolUnit(members: Set[Idol], subunits: Seq[Subunit])
 
 object IdolUnits {
   val MAX_SIZE = 8
@@ -19,7 +19,7 @@ object IdolUnits {
     }
   }
 
-  def fromSubunits(subunits: Seq[Subunit], minSmile: Int = 1): Array[IdolUnit] = {
+  def fromSubunits(subunits: Seq[Subunit], minSmile: Int = 1): Seq[IdolUnit] = {
     val subunitLongs: Array[Long] = subunits.map(_.toLong).toArray
 
     val idolUnitLs = for {
@@ -29,7 +29,7 @@ object IdolUnits {
       if java.lang.Long.bitCount(membersL) <= MAX_SIZE
     } yield IdolUnitLongs(membersL, possibleSubunitsL)
 
-    idolUnitLs.map(_.toIdolUnit).toArray
+    idolUnitLs.map(_.toIdolUnit)
   }
 }
 
