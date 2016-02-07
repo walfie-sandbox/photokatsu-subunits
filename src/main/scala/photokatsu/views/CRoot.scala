@@ -11,8 +11,10 @@ object CRoot {
   val defaultMinSmile: Int = 5
   val initialIdols: Map[Idol, Boolean] = SortedMap(Idols.values.map(_ -> false): _*)
 
+  case class State(idols: Map[Idol, Boolean])
+
   val component = ReactComponentB[Unit]("Echo")
-    .initialState(State(initialIdols, defaultMinSmile))
+    .initialState(State(initialIdols))
     .renderBackend[Backend]
     .buildU
 
@@ -27,7 +29,15 @@ object CRoot {
         ^.defaultValue := defaultMinSmile,
         ^.`type` := "number"
       ),
-      idolCheckboxes(s.idols),
+      s.idols.map { case (idol: Idol, isSelected: Boolean) =>
+        CIdolSelect(CIdolSelect.Props(
+          idol,
+          isSelected,
+          $.modState { s: State =>
+            s.copy(idols = s.idols.updated(idol, !isSelected))
+          }
+        ))
+      },
       <.button("Submit")
     )
 
