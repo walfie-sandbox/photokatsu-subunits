@@ -9,10 +9,14 @@ import photokatsu.models.Idols._
 import scala.collection.immutable.SortedMap
 
 object CIdolInputs {
-  val defaultMinSmile: Int = 5
+  val defaultMinSmile: Int = 8
   val initialIdols: SortedMap[Idol, Boolean] = SortedMap(Idols.values.map(_ -> false): _*)
 
-  protected case class State(idols: SortedMap[Idol, Boolean])
+  protected case class State(
+    idols: SortedMap[Idol, Boolean],
+    minSmile: Int
+  )
+
   case class Props(
     onSubmit: (Seq[Idol], Int) => Callback,
     storage: Option[Storage]
@@ -20,7 +24,7 @@ object CIdolInputs {
 
   val component = ReactComponentB[Props]("IdolInputs")
     .initialState_P { p: Props =>
-      val defaultState = State(initialIdols)
+      val defaultState = State(initialIdols, defaultMinSmile)
       p.storage.fold(defaultState)(storage => loadState(storage, defaultState))
     }
     .renderBackend[Backend]
@@ -42,17 +46,25 @@ object CIdolInputs {
 
       val minSmileInput = <.input(
         ^.ref := minSmileRef,
-        ^.defaultValue := defaultMinSmile,
+        ^.defaultValue := s.minSmile,
         ^.`type` := "number"
       )
 
+      def onSubmit(e: ReactEventI): Callback = {
+        val idols: Seq[Idol] = s.idols.filter(_._2).keys.toSeq
+        val minSmile: Int = minSmileRef($).map(_.valueAsNumber).get
+
+        e.preventDefaultCB >>
+          p.onSubmit(idols, minSmile) >>
+          $.modState { s: State =>
+            val newState = s.copy(minSmile = minSmile)
+            saveState(p.storage, newState)
+            newState
+          }
+      }
+
       <.form(
-        ^.onSubmit ==> { e: ReactEventI =>
-          val idols: Seq[Idol] = s.idols.filter(_._2).keys.toSeq
-          val minSmile: Int = minSmileRef($).map(_.valueAsNumber).get
-          saveIdols(p.storage, idols)
-          e.preventDefaultCB >> p.onSubmit(idols, minSmile)
-        },
+        ^.onSubmit ==> onSubmit,
         minSmileInput,
         idolCheckboxes,
         <.button("Submit")
@@ -60,9 +72,10 @@ object CIdolInputs {
     }
   }
 
-  protected val LOCALSTORAGE_KEY = "inputIdols"
+  protected val STORAGEKEY_IDOLS = "inputIdols"
+  protected val STORAGEKEY_MIN_SMILE = "inputMinSmile"
   def loadIdols(storage: Storage): Seq[Idol] = {
-    val idolNames: Seq[String] = storage(LOCALSTORAGE_KEY)
+    val idolNames: Seq[String] = storage(STORAGEKEY_IDOLS)
       .fold(Seq[String]())(_.split(","))
 
     for {
@@ -71,22 +84,30 @@ object CIdolInputs {
     } yield idol
   }
 
-  def loadState(storage: Storage, state: State): State = {
+  def loadState(storage: Storage, fallbackState: State): State = {
     val storedIdols: Seq[Idol] = loadIdols(storage)
+    val minSmile: Int = try {
+      storage(STORAGEKEY_MIN_SMILE).map(_.toInt).getOrElse(fallbackState.minSmile)
+    } catch {
+      case e: NumberFormatException => fallbackState.minSmile
+    }
 
-    val newIdols: SortedMap[Idol, Boolean] = state.idols.map {
+    val newIdols: SortedMap[Idol, Boolean] = fallbackState.idols.map {
       case (idol, _) => idol -> storedIdols.contains(idol)
     }
 
-    state.copy(idols = newIdols)
+    fallbackState.copy(idols = newIdols, minSmile = minSmile)
   }
 
-  def saveIdols(
+  def saveState(
     storageOpt: Option[Storage],
-    idols: Seq[Idol]
+    state: State
   ): Unit = storageOpt.map { storage: Storage =>
-    val serializedIdols: String = idols.map(_.name).mkString(",")
-    storage.update(LOCALSTORAGE_KEY, serializedIdols)
+    val serializedIdols: String = (for {
+      (idol, isSelected) <- state.idols if isSelected
+    } yield idol.name).mkString(",")
+    storage.update(STORAGEKEY_IDOLS, serializedIdols)
+    storage.update(STORAGEKEY_MIN_SMILE, state.minSmile.toString)
   }
 
   def apply(p: Props): ReactElement = component(p)
