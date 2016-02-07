@@ -7,6 +7,7 @@ import org.scalajs.dom.raw.HTMLInputElement
 import scala.collection.immutable.SortedMap
 import walfie.photokatsu.models._
 import walfie.photokatsu.models.Idols._
+import walfie.photokatsu.util.mdl._
 
 object CIdolInputs {
   val defaultMinSmile: Int = 8
@@ -67,7 +68,10 @@ object CIdolInputs {
         ^.onSubmit ==> onSubmit,
         minSmileInput,
         idolCheckboxes,
-        <.button("Submit")
+        <.button(
+          "Submit",
+          ^.className := "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+        ).mdl
       )
     }
   }
