@@ -12,8 +12,6 @@ object Photokatsu extends JSApp {
   def main(): Unit = {
     val holder = document.querySelector("#content")
     ReactDOM.render(CRoot.component(), holder)
-
-    test()
   }
 
   def test(): Unit = {
