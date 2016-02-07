@@ -8,7 +8,8 @@ object Dependencies {
   lazy val settings = Seq(
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.8.2",
-      "com.github.japgolly.scalajs-react" %%% "core" % "0.10.4"
+      "com.github.japgolly.scalajs-react" %%% "core" % "0.10.4",
+      "com.beachape" %%% "enumeratum" % "1.3.6"
     ),
 
     jsDependencies ++= Seq(

@@ -5,10 +5,18 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.document
 import photokatsu.models._
 import photokatsu.models.Idols._
+import photokatsu.views._
 import scala.scalajs.js.JSApp
 
 object Photokatsu extends JSApp {
   def main(): Unit = {
+    val holder = document.querySelector("#content")
+    ReactDOM.render(CRoot.component(), holder)
+
+    test()
+  }
+
+  def test(): Unit = {
     val myIdols: Seq[Idol] = Set(
       Akari, Ichigo, Maria, Yurika, Sumire,
       Rin, Seira, Shion, Sora, Ran,

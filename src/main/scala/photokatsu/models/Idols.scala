@@ -1,12 +1,11 @@
 package photokatsu.models
 
-import photokatsu.util.Enum
 import photokatsu.models.Attributes._
+import enumeratum._
 
-sealed trait Idol {
-  def name: String
-  def attribute: Attribute
-  def toLong(): Long
+sealed abstract class Idol(val attribute: Attribute) extends EnumEntry {
+  lazy val name: String = this.toString
+  lazy val toLong: Long = 1L << Idols.indexOf(this)
 }
 
 object Idol {
@@ -14,36 +13,31 @@ object Idol {
     Idols.values.map(idol => idol.toLong -> idol).toMap
 }
 
-object Idols extends Enum {
-  sealed abstract class EnumVal(
-    val name: String,
-    val attribute: Attribute
-  ) extends Value with Idol {
-    def toLong(): Long = 1L << this.ordinal
-  }
+object Idols extends Enum[Idol] {
+  val values: Seq[Idol] = findValues
 
-  case object Akari extends EnumVal("Akari", Cute)
-  case object Aoi extends EnumVal("Aoi", Cool)
-  case object Hikari extends EnumVal("Hikari", Sexy)
-  case object Hinaki extends EnumVal("Hinaki", Pop)
-  case object Ichigo extends EnumVal("Ichigo", Cute)
-  case object Juri extends EnumVal("Juri", Sexy)
-  case object Kaede extends EnumVal("Kaede", Pop)
-  case object Kii extends EnumVal("Kii", Pop)
-  case object Kokone extends EnumVal("Kokone", Pop)
-  case object Madoka extends EnumVal("Madoka", Cute)
-  case object Maria extends EnumVal("Maria", Cute)
-  case object Mikuru extends EnumVal("Mikuru", Pop)
-  case object Miyabi extends EnumVal("Miyabi", Sexy)
-  case object Mizuki extends EnumVal("Mizuki", Sexy)
-  case object Otome extends EnumVal("Otome", Pop)
-  case object Ran extends EnumVal("Ran", Sexy)
-  case object Rin extends EnumVal("Rin", Cool)
-  case object Sakura extends EnumVal("Sakura", Cute)
-  case object Seira extends EnumVal("Seira", Cool)
-  case object Shion extends EnumVal("Shion", Cool)
-  case object Sora extends EnumVal("Sora", Sexy)
-  case object Sumire extends EnumVal("Sumire", Cool)
-  case object Yurika extends EnumVal("Yurika", Cool)
+  case object Akari extends Idol(Cute)
+  case object Aoi extends Idol(Cool)
+  case object Hikari extends Idol(Sexy)
+  case object Hinaki extends Idol(Pop)
+  case object Ichigo extends Idol(Cute)
+  case object Juri extends Idol(Sexy)
+  case object Kaede extends Idol(Pop)
+  case object Kii extends Idol(Pop)
+  case object Kokone extends Idol(Pop)
+  case object Madoka extends Idol(Cute)
+  case object Maria extends Idol(Cute)
+  case object Mikuru extends Idol(Pop)
+  case object Miyabi extends Idol(Sexy)
+  case object Mizuki extends Idol(Sexy)
+  case object Otome extends Idol(Pop)
+  case object Ran extends Idol(Sexy)
+  case object Rin extends Idol(Cool)
+  case object Sakura extends Idol(Cute)
+  case object Seira extends Idol(Cool)
+  case object Shion extends Idol(Cool)
+  case object Sora extends Idol(Sexy)
+  case object Sumire extends Idol(Cool)
+  case object Yurika extends Idol(Cool)
 }
 
