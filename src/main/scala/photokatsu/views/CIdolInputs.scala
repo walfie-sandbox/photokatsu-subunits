@@ -10,9 +10,9 @@ import scala.collection.immutable.SortedMap
 
 object CIdolInputs {
   val defaultMinSmile: Int = 5
-  val initialIdols: Map[Idol, Boolean] = SortedMap(Idols.values.map(_ -> false): _*)
+  val initialIdols: SortedMap[Idol, Boolean] = SortedMap(Idols.values.map(_ -> false): _*)
 
-  protected case class State(idols: Map[Idol, Boolean])
+  protected case class State(idols: SortedMap[Idol, Boolean])
   case class Props(
     onSubmit: (Seq[Idol], Int) => Callback,
     storage: Option[Storage]
@@ -74,11 +74,11 @@ object CIdolInputs {
   def loadState(storage: Storage, state: State): State = {
     val storedIdols: Seq[Idol] = loadIdols(storage)
 
-    val newMap: Map[Idol, Boolean] = state.idols.map { case (idol, _) =>
-      idol -> storedIdols.contains(idol)
-    }.toMap
+    val newIdols: SortedMap[Idol, Boolean] = state.idols.map {
+      case (idol, _) => idol -> storedIdols.contains(idol)
+    }
 
-    state.copy(idols = newMap)
+    state.copy(idols = newIdols)
   }
 
   def saveIdols(
