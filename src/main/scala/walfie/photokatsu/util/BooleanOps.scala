@@ -1,4 +1,4 @@
-package photokatsu.util
+package walfie.photokatsu.util
 
 object BooleanOps {
   implicit class BooleanToOption(val bool: Boolean) extends AnyVal {

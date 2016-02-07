@@ -1,6 +1,6 @@
-package photokatsu.models
+package walfie.photokatsu.models
 
-import photokatsu.models.Idols._
+import walfie.photokatsu.models.Idols._
 
 case class IdolUnit(members: Set[Idol], smiles: Seq[Smile])
 

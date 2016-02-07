@@ -1,4 +1,4 @@
-package photokatsu.models
+package walfie.photokatsu.models
 
 sealed trait Attribute
 

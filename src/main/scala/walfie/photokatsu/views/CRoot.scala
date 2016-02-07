@@ -1,9 +1,9 @@
-package photokatsu.views
+package walfie.photokatsu.views
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.ext.Storage
-import photokatsu.models._
+import walfie.photokatsu.models._
 
 object CRoot {
   case class Props(storage: Option[Storage])

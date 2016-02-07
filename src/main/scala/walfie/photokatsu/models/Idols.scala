@@ -1,7 +1,7 @@
-package photokatsu.models
+package walfie.photokatsu.models
 
-import photokatsu.models.Attributes._
 import enumeratum._
+import walfie.photokatsu.models.Attributes._
 
 sealed abstract class Idol(val attribute: Attribute) extends EnumEntry {
   lazy val name: String = this.toString

@@ -1,12 +1,12 @@
-package photokatsu.views
+package walfie.photokatsu.views
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.raw.HTMLInputElement
 import org.scalajs.dom.ext.Storage
-import photokatsu.models._
-import photokatsu.models.Idols._
+import org.scalajs.dom.raw.HTMLInputElement
 import scala.collection.immutable.SortedMap
+import walfie.photokatsu.models._
+import walfie.photokatsu.models.Idols._
 
 object CIdolInputs {
   val defaultMinSmile: Int = 8

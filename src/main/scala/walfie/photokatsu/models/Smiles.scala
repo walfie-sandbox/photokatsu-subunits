@@ -1,7 +1,7 @@
-package photokatsu.models
+package walfie.photokatsu.models
 
-import photokatsu.models.Idols._
-import photokatsu.util.BooleanOps._
+import walfie.photokatsu.models.Idols._
+import walfie.photokatsu.util.BooleanOps._
 
 case class Smile(name: String, members: Set[Idol]) {
   def toLong(): Long = members.map(_.toLong).reduce(_ | _)

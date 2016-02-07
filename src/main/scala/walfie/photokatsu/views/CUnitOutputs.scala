@@ -1,9 +1,8 @@
-package photokatsu.views
+package walfie.photokatsu.views
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import photokatsu.models._
-import photokatsu.models.Idols._
+import walfie.photokatsu.models._
 
 object CUnitOutputs {
   case class Props(units: Seq[IdolUnit])

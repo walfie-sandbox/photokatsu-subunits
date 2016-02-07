@@ -1,8 +1,8 @@
-package photokatsu.views
+package walfie.photokatsu.views
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import photokatsu.models._
+import walfie.photokatsu.models._
 
 object CIdolSelect {
   case class Props(
