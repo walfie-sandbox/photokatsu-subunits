@@ -23,7 +23,7 @@ object IdolUnits {
     val smileLongs: Array[Long] = smiles.map(_.toLong).toArray
 
     val idolUnitLs = for {
-      smileCount: Int <- smiles.size.to(minSmileCount).by(-1)
+      smileCount: Int <- smiles.size.to(minSmileCount).by(-1) if smileCount > 0
       possibleSmilesL <- smileLongs.combinations(smileCount)
       membersL: Long = possibleSmilesL.reduce(_ | _)
       if java.lang.Long.bitCount(membersL) <= MAX_SIZE

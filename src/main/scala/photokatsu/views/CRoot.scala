@@ -5,10 +5,11 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.raw.HTMLInputElement
 import photokatsu.models._
 import photokatsu.models.Idols._
+import scala.collection.immutable.SortedMap
 
 object CRoot {
   val defaultMinSmile: Int = 5
-  val initialIdols: Map[Idol, Boolean] = Idols.values.map(_ -> false).toMap
+  val initialIdols: Map[Idol, Boolean] = SortedMap(Idols.values.map(_ -> false): _*)
 
   val component = ReactComponentB[Unit]("Echo")
     .initialState(State(initialIdols, defaultMinSmile))
@@ -19,14 +20,25 @@ object CRoot {
     val minSmileRef = Ref[HTMLInputElement]("minSmile")
     // get value with: minSmileRef($).map(_.value)
 
-    def render(s: State): ReactElement = <.div(
+    def render(s: State): ReactElement = <.form(
+      ^.onSubmit ==> handleSubmit,
       <.input(
         ^.ref := minSmileRef,
-        ^.defaultValue := minSmile,
+        ^.defaultValue := defaultMinSmile,
         ^.`type` := "number"
       ),
-      idolCheckboxes(s.idols)
+      idolCheckboxes(s.idols),
+      <.button("Submit")
     )
+
+    def handleSubmit(e: ReactEventI): Callback = {
+      e.preventDefaultCB >> $.modState { s: State =>
+        val minSmile: Int = minSmileRef($).map(_.valueAsNumber).get
+        val selectedIdols: Seq[Idol] = s.idols.filter(_._2).keys.toSeq
+        println(IdolUnits.fromIdols(selectedIdols, minSmile))
+        s
+      }
+    }
 
     def idolCheckboxes(idols: Map[Idol, Boolean]): ReactElement = <.div(
       idols.map { case (idol: Idol, isSelected: Boolean) =>

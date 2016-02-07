@@ -60,7 +60,9 @@ object Smiles {
   def getPossibleSmiles(
     idols: Seq[Idol],
     smiles: Seq[Smile] = Smiles.all
-  ): Seq[Smile] = {
+  ): Seq[Smile] = if (idols.isEmpty) {
+    Seq.empty
+  } else {
     val idolL: Long = idols.map(_.toLong).reduce(_ | _)
 
     for {

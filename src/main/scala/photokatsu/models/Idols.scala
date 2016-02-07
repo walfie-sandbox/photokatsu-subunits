@@ -14,8 +14,6 @@ object Idol {
 }
 
 object Idols extends Enum[Idol] {
-  val values: Seq[Idol] = findValues
-
   case object Akari extends Idol(Cute)
   case object Aoi extends Idol(Cool)
   case object Hikari extends Idol(Sexy)
@@ -39,5 +37,9 @@ object Idols extends Enum[Idol] {
   case object Sora extends Idol(Sexy)
   case object Sumire extends Idol(Cool)
   case object Yurika extends Idol(Cool)
+
+  val values: Seq[Idol] = findValues
+
+  implicit val idolOrdering: Ordering[Idol] = Ordering.by(_.name)
 }
 
