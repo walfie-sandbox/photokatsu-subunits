@@ -2,19 +2,21 @@ package photokatsu.views
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
+import org.scalajs.dom.ext.Storage
 import photokatsu.models._
 
 object CRoot {
+  case class Props(storage: Option[Storage])
   protected case class State(units: Seq[IdolUnit])
 
-  val component = ReactComponentB[Unit]("Root")
+  val component = ReactComponentB[Props]("Root")
     .initialState(State(Seq.empty))
     .renderBackend[Backend]
-    .buildU
+    .build
 
-  class Backend($: BackendScope[Unit, State]) {
-    def render(s: State): ReactElement = <.div(
-      CIdolInputs(CIdolInputs.Props(onSubmit = onSubmit)),
+  class Backend($: BackendScope[Props, State]) {
+    def render(p: Props, s: State): ReactElement = <.div(
+      CIdolInputs(CIdolInputs.Props(storage = p.storage, onSubmit = onSubmit)),
       CUnitOutputs(CUnitOutputs.Props(s.units))
     )
 
@@ -26,8 +28,6 @@ object CRoot {
     }
 
   }
-
-  def apply(): ReactElement = component()
 }
 
 

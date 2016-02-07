@@ -3,6 +3,7 @@ package photokatsu
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.document
+import org.scalajs.dom.ext.LocalStorage
 import photokatsu.models._
 import photokatsu.models.Idols._
 import photokatsu.views._
@@ -11,7 +12,10 @@ import scala.scalajs.js.JSApp
 object Photokatsu extends JSApp {
   def main(): Unit = {
     val holder = document.querySelector("#content")
-    ReactDOM.render(CRoot.component(), holder)
+    val storage = Option(LocalStorage)
+    val root = CRoot.component(CRoot.Props(storage))
+
+    ReactDOM.render(root, holder)
   }
 
   def test(): Unit = {
