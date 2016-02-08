@@ -8,6 +8,7 @@ import org.scalajs.dom.raw.HTMLInputElement
 import scala.collection.immutable.SortedMap
 import walfie.photokatsu.models._
 import walfie.photokatsu.models.Idols._
+import walfie.photokatsu.util.StringOps._
 import walfie.photokatsu.util.mdl.ToMDL
 
 object CIdolInputs {
@@ -52,11 +53,7 @@ object CIdolInputs {
           ^.className := "mdl-textfield__input",
           ^.name := "minSmile",
           ^.onChange ==>? { e: ReactEventI =>
-            val newMinSmileO: Option[Int] = try {
-              Some(e.target.value.toInt)
-            } catch {
-              case e: NumberFormatException => None
-            }
+            val newMinSmileO: Option[Int] = e.target.value.toIntOpt
             newMinSmileO.map { newMinSmile: Int =>
               $.modState(s => s.copy(minSmile = newMinSmile))
             }
@@ -108,11 +105,9 @@ object CIdolInputs {
 
   def loadState(storage: Storage, fallbackState: State): State = {
     val storedIdols: Seq[Idol] = loadIdols(storage)
-    val minSmile: Int = try {
-      storage(STORAGEKEY_MIN_SMILE).map(_.toInt).getOrElse(fallbackState.minSmile)
-    } catch {
-      case e: NumberFormatException => fallbackState.minSmile
-    }
+    val minSmile: Int = storage(STORAGEKEY_MIN_SMILE)
+      .flatMap(_.toIntOpt)
+      .getOrElse(fallbackState.minSmile)
 
     val newIdols: SortedMap[Idol, Boolean] = fallbackState.idols.map {
       case (idol, _) => idol -> storedIdols.contains(idol)
