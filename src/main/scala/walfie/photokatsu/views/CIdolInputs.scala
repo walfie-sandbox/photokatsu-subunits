@@ -1,13 +1,14 @@
 package walfie.photokatsu.views
 
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import org.scalajs.dom.ext.Storage
 import org.scalajs.dom.raw.HTMLInputElement
 import scala.collection.immutable.SortedMap
 import walfie.photokatsu.models._
 import walfie.photokatsu.models.Idols._
-import walfie.photokatsu.util.mdl._
+import walfie.photokatsu.util.mdl.ToMDL
 
 object CIdolInputs {
   val defaultMinSmile: Int = 8
@@ -32,8 +33,6 @@ object CIdolInputs {
     .build
 
   class Backend($: BackendScope[Props, State]) {
-    val minSmileRef = Ref[HTMLInputElement]("minSmile")
-
     def render(p: Props, s: State): ReactElement = {
       val idolCheckboxes = s.idols.map { case (idol: Idol, isSelected: Boolean) =>
         CIdolSelect(CIdolSelect.Props(
@@ -45,33 +44,52 @@ object CIdolInputs {
         ))
       }
 
-      val minSmileInput = <.input(
-        ^.ref := minSmileRef,
-        ^.defaultValue := s.minSmile,
-        ^.`type` := "number"
-      )
+      val minSmileInput = <.div(
+        ^.className := "mdl-textfield mdl-js-textfield mdl-textfield--floating-label",
+        <.input(
+          ^.defaultValue := s.minSmile,
+          ^.`type` := "number",
+          ^.className := "mdl-textfield__input",
+          ^.name := "minSmile",
+          ^.onChange ==>? { e: ReactEventI =>
+            val newMinSmileO: Option[Int] = try {
+              Some(e.target.value.toInt)
+            } catch {
+              case e: NumberFormatException => None
+            }
+            newMinSmileO.map { newMinSmile: Int =>
+              $.modState(s => s.copy(minSmile = newMinSmile))
+            }
+          }
+        ),
+        <.label(
+          "Minimum # of Subunits",
+          ^.className := "mdl-textfield__label",
+          Attr("pattern") := "[0-9]+",
+          ^.`for` := "minSmile"
+        ),
+        <.span(
+          ^.className := "mdl-textfield__error",
+          "Input is not a number"
+        )
+      ).mdl
 
       def onSubmit(e: ReactEventI): Callback = {
         val idols: Seq[Idol] = s.idols.filter(_._2).keys.toSeq
-        val minSmile: Int = minSmileRef($).map(_.valueAsNumber).get
 
         e.preventDefaultCB >>
-          p.onSubmit(idols, minSmile) >>
-          $.modState { s: State =>
-            val newState = s.copy(minSmile = minSmile)
-            saveState(p.storage, newState)
-            newState
-          }
+          p.onSubmit(idols, s.minSmile) >>
+          $.modState { s: State => saveState(p.storage, s) }
       }
 
       <.form(
-        ^.onSubmit ==> onSubmit,
         minSmileInput,
         idolCheckboxes,
         <.button(
           "Submit",
           ^.className := "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-        ).mdl
+        ),
+        ^.onSubmit ==> onSubmit
       )
     }
   }
@@ -106,12 +124,16 @@ object CIdolInputs {
   def saveState(
     storageOpt: Option[Storage],
     state: State
-  ): Unit = storageOpt.map { storage: Storage =>
-    val serializedIdols: String = (for {
-      (idol, isSelected) <- state.idols if isSelected
-    } yield idol.name).mkString(",")
-    storage.update(STORAGEKEY_IDOLS, serializedIdols)
-    storage.update(STORAGEKEY_MIN_SMILE, state.minSmile.toString)
+  ): State = {
+    storageOpt.map { storage: Storage =>
+      val serializedIdols: String = (for {
+        (idol, isSelected) <- state.idols if isSelected
+      } yield idol.name).mkString(",")
+      storage.update(STORAGEKEY_IDOLS, serializedIdols)
+      storage.update(STORAGEKEY_MIN_SMILE, state.minSmile.toString)
+    }
+
+    state
   }
 
   def apply(p: Props): ReactElement = component(p)
